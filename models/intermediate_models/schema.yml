@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: int_listening_events_joined
+    columns:
+      - name: event_id
+        tests:
+          - unique
+          - not_null
+  - name: int_tracks_joined
+    columns: 
+      - name: track_id
+        tests:
+          - unique
+          - not_null
