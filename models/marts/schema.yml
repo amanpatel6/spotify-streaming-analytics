@@ -1,0 +1,67 @@
+version: 2
+
+models:
+  - name: fct_skip_rate_by_genre
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - primary_genre
+            - subscription_tier
+    columns:
+      - name: primary_genre
+        tests:
+          - not_null
+      - name: subscription_tier
+        tests:
+          - not_null
+
+
+  - name: fct_streaming_volume_over_time
+    tests: 
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - played_at_date
+            - primary_genre
+
+ 
+  - name: fct_streams_by_device_and_context
+    tests: 
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - device_type
+            - context
+
+
+  - name: fct_top_artists_by_country
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - artist_id
+            - artist_name
+            - country_current
+    columns: 
+      - name: artist_id
+        tests:
+          - not_null
+      - name: country_rank
+        tests:
+          - dbt_utils.accepted_range: 
+              min_value: 1
+              max_value: 10
+
+
+  - name: fct_artist_loyal_listeners
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - artist_id
+            - artist_name
+    columns:
+      - name: total_users
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 1
+      - name: artist_id
+        tests:
+          - not_null
+          - unique
